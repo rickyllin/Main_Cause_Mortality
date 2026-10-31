@@ -1,0 +1,22 @@
+﻿縣市別,KMeans_k2,KMeans_k3,KMeans_k4,KMeans_k5
+南投縣,Group B,Group C,Group D,Group C
+台中市,Group A,Group B,Group A,Group A
+台北市,Group A,Group A,Group C,Group D
+台南市,Group A,Group B,Group A,Group A
+台東縣,Group A,Group B,Group A,Group A
+嘉義市,Group A,Group B,Group A,Group A
+嘉義縣,Group A,Group B,Group A,Group A
+基隆市,Group A,Group A,Group C,Group D
+宜蘭縣,Group A,Group B,Group C,Group A
+屏東縣,Group B,Group C,Group D,Group C
+彰化縣,Group A,Group B,Group A,Group A
+新北市,Group A,Group A,Group C,Group D
+新竹市,Group A,Group B,Group A,Group A
+新竹縣,Group B,Group C,Group D,Group C
+桃園市,Group A,Group B,Group A,Group A
+澎湖縣,Group A,Group B,Group A,Group E
+花蓮縣,Group A,Group B,Group A,Group A
+苗栗縣,Group B,Group C,Group D,Group C
+金門縣,Group B,Group C,Group B,Group B
+雲林縣,Group A,Group B,Group A,Group A
+高雄市,Group A,Group B,Group A,Group A
