@@ -42,3 +42,5 @@ def load_pivot() -> pd.DataFrame:
 
 def group_names(k: int):
     return [f"Group {chr(65 + i)}" for i in range(k)]
+
+MOHW_DIR = ROOT / "data" / "raw" / "mohw_cause_of_death"

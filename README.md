@@ -1,48 +1,50 @@
 # Main_Cause_Mortality
 
-台灣 21 縣市肺癌（肺、支氣管及氣管）**年齡標準化率**長期追蹤分析（1979–2022，政大碩二〈多變量分析〉期末報告）。
-以 PCA 萃取全島共同趨勢與區域分化，再以 K-means 與階層式分群（single / complete / average / ward）合併相似縣市，並繪製地理分布圖。
+台灣 21 縣市**肺癌發生率（1979–2022）與死亡率（2020–2025 可得年度）**之時空分析
+（政大碩二〈多變量分析〉期末報告）。以 PCA 萃取縣市長期結構，以 K-means／階層式分群歸併相似縣市，
+並以死亡發生比（MIR = 標準化死亡率 ÷ 標準化發生率）比較兩端指標。
 
 ## 主要結果
 | 項目 | 結果 |
 |---|---|
-| PCA（相關係數矩陣） | PC1 53.6%、PC2 13.6%、前 4 個 PC 累積 82.3%、前 7 個 90.8% |
-| PCA（共變異數矩陣） | PC1 54.1%、PC2 16.0%（與相關矩陣版本結論一致） |
-| K-means | silhouette 最佳 k=2，次佳 k=5 |
-| 階層式分群 | k=2 各 linkage 最佳（0.46）；Ward 與 K-means 在 k=2、5 的分群相近 |
+| 全國趨勢 | 縣市平均發生率 9.6（1979）→ 39.8（2022）；縣市間變異係數 0.61 → 0.16（水準上升、差距收斂） |
+| PCA（相關矩陣） | PC1 53.6%、PC2 13.6%、前 4 個 82.3%、前 7 個 90.8%；共變異數版本相近 |
+| PC1 / PC2 詮釋 | PC1＝長期穩定的空間梯度（北部都會、宜蘭高；苗栗、屏東、南投、新竹縣、金門低）；PC2＝早發都會 vs. 後發中南部之時序翻轉 |
+| 分群 | K-means 與 Ward 在 k=2、5 成員一致；k=5：北部都會(台北/基隆/新北)、其餘本島 12 縣市、中西部南部偏鄉(南投/屏東/新竹縣/苗栗)、澎湖、金門 |
+| 輪廓係數注意 | single/complete/average 的 k=2（0.461）只是把金門孤立，**不是**較佳的區域劃分 |
+| 發生 vs 死亡（2020–22） | 縣市間相關僅 0.33–0.53；MIR 台北 0.42 最低，屏東/台東 0.69 偏高；金門 0.95 疑為登記歸屬偏差 |
 
-詳細圖表見 `outputs/`，完整論述見 `reports/lung_cancer_longitudinal_analysis.docx`。
+完整論述見 **`paper/main.tex`**（LaTeX，含公共衛生討論與政策建議）。
 
 ## 專案結構
 ```
-data/raw/        原始資料（癌症登記，各癌別 × 縣市 × 性別 × 年）
-data/external/   內政部縣市界線 shapefile (1140318)
-data/processed/  縣市 × 年份矩陣（由 01 產生）
-src/             可重現的分析流程（01→05）
-outputs/         figures/ 圖、tables/ 表（由腳本產生）
-reports/         期末報告 docx、題目發想紀錄
-notebooks/legacy 原始 Colab notebooks（已清除輸出，僅供追溯）
+paper/            main.tex（分析文章，XeLaTeX + ctex）
+src/              可重現流程 01→06（common.py 為共用設定）
+outputs/          figures/ 圖、tables/ 表（由腳本產生）
+data/raw/         癌症登記發生率 CSV；mohw_cause_of_death/ 衛福部各縣市死因統計表（民國109–112、114年）
+data/external/    內政部縣市界線 shapefile (1140318)
+data/processed/   縣市 × 年份矩陣（由 01 產生）
+reports/          舊版報告 docx（已修正發生率/死亡率用語）、題目發想紀錄
+notebooks/legacy/ 原始 Colab notebooks（已清除輸出，僅供追溯）
+Makefile          make analysis / make paper
 ```
 
 ## 執行
 ```bash
 pip install -r requirements.txt
-cd src
-python 01_preprocess.py   # 篩選肺癌/全性別、pivot、排除連江縣
-python 02_eda.py          # 趨勢、箱型圖、縣市相關熱圖
-python 03_pca.py          # corr vs cov PCA、scree、biplot
-python 04_cluster.py      # K-means / 階層式分群、輪廓係數、樹狀圖
-python 05_maps.py         # 分群地圖 + 群組平均趨勢
+make analysis        # 或依序執行 src/01…06
+make paper           # 需 XeLaTeX；亦可上傳 Overleaf（編譯器選 XeLaTeX，主檔 paper/main.tex）
 ```
-繁體中文字型自動偵測（PingFang TC / Heiti TC / Noto Sans CJK 等）。
+中文字型自動偵測（PingFang TC / Heiti TC / Noto Sans CJK 等）。
 
-## 方法重點
-- 資料：縣市（21，排除連江縣：11 個年份缺值、案例數極少）× 年（44）。
-- 各年度跨縣市標準化後再做 PCA／分群（等同相關矩陣 PCA），聚焦趨勢型態而非絕對水準。
-- 縣市相關性須用 `pivot.T.corr()`（`pivot.corr()` 算的是年份間相關）。
+## 資料說明
+- **發生率**：`data/raw/lung_cancer_incidence_1979_2022.csv`，癌症登記，年齡標準化（WHO 2000），肺、支氣管及氣管，全性別。
+- **死亡率**：`06_mortality.py` 由 `data/raw/mohw_cause_of_death/roc*_county.xls`（表2，ICD-10 C33–C34）抽取合計與男女別標準化死亡率，
+  年度為 2020–2023、2025（2024／民國113年檔案不在資料夾）。發生率與死亡率重疊僅 2020–2022，故 MIR 僅此三年。
+- 連江縣因缺值與個案極少排除；縣市別已為現行區劃，無需合併調整。
 
-## 已知限制 / 修正紀錄
-- **指標名稱已修正**：CSV 為癌症登記的年齡標準化**發生率**（非死亡率）。`reports/lung_cancer_longitudinal_analysis.docx` 內文已由「死亡率／死因統計」改為「發生率／癌症登記」（文獻回顧中引用的真實死因統計不動）。報告內嵌圖片裡的文字（如圖標題）無法自動修改，需回原圖重製。若要做真正的死因（死亡）追蹤，需改用衛福部死因統計資料。
-- **縣市合併說明已修正**：資料縣市別本就是現行區劃，無需加權合併；報告已改為說明此點。
-- 澎湖、金門人口少，年度波動大，會單獨成群，分群結果對其敏感。
-- 原始作業 HW1 notebook 與課程中間稿未納入；`notebooks/legacy/` 內的 markdown 仍保留舊的「死亡率」措辭。
+## 已知限制 / 待辦
+- `paper/main.tex` **尚未在本機編譯驗證**（環境無 TeX）；內含紅色【待確認】標註（法規日期、LDCT 計畫條件、文獻書目等）需人工核對後移除。
+- 1979–2022 完整**死亡率**序列需另取衛福部歷年死因統計；取得後 `src/01–05` 可直接套用。
+- 小人口離島（金門、澎湖）估計不穩；MIR 為粗略代理指標；全為生態學層級分析。
+- 原始作業 HW1 notebook 與 `新增資料集` 內的 PDF 報告未納入；`notebooks/legacy/` 仍保留舊「死亡率」措辭。

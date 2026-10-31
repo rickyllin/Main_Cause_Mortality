@@ -3,3 +3,10 @@ __pycache__/
 .venv/
 .ipynb_checkpoints/
 data/processed/*_with_lienchiang.csv
+# LaTeX build files
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.xdv
+paper/*.synctex.gz
