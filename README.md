@@ -11,6 +11,7 @@
 | PCA（相關矩陣） | PC1 53.6%、PC2 13.6%、前 4 個 82.3%、前 7 個 90.8%；共變異數版本相近 |
 | PC1 / PC2 詮釋 | PC1＝長期穩定的空間梯度（北部都會、宜蘭高；苗栗、屏東、南投、新竹縣、金門低）；PC2＝早發都會 vs. 後發中南部之時序翻轉 |
 | 分群 | K-means 與 Ward 在 k=2、5 成員一致；k=5：北部都會(台北/基隆/新北)、其餘本島 12 縣市、中西部南部偏鄉(南投/屏東/新竹縣/苗栗)、澎湖、金門 |
+| 其他演算法（07） | PAM、DTW、譜分群、GMM（PCA 得分／成長曲線）、fuzzy c-means、DBSCAN：K-means/Ward/GMM 在 k=5 完全一致（ARI=1）；k=2 最穩（bootstrap ARI 0.82–0.88）；相關係數距離（只看形狀）分不出群 |
 | 輪廓係數注意 | single/complete/average 的 k=2（0.461）只是把金門孤立，**不是**較佳的區域劃分 |
 | 發生 vs 死亡（2020–22） | 縣市間相關僅 0.33–0.53；MIR 台北 0.42 最低，屏東/台東 0.69 偏高；金門 0.95 疑為登記歸屬偏差 |
 
@@ -19,7 +20,7 @@
 ## 專案結構
 ```
 paper/            main.tex（分析文章，XeLaTeX + ctex）
-src/              可重現流程 01→06（common.py 為共用設定）
+src/              可重現流程 01→07（common.py 為共用設定）
 outputs/          figures/ 圖、tables/ 表（由腳本產生）
 data/raw/         癌症登記發生率 CSV；mohw_cause_of_death/ 衛福部各縣市死因統計表（民國109–112、114年）
 data/external/    內政部縣市界線 shapefile (1140318)
@@ -32,7 +33,7 @@ Makefile          make analysis / make paper
 ## 執行
 ```bash
 pip install -r requirements.txt
-make analysis        # 或依序執行 src/01…06
+make analysis        # 或依序執行 src/01…07
 make paper           # 需 XeLaTeX；亦可上傳 Overleaf（編譯器選 XeLaTeX，主檔 paper/main.tex）
 ```
 中文字型自動偵測（PingFang TC / Heiti TC / Noto Sans CJK 等）。

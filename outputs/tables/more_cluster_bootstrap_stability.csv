@@ -1,0 +1,13 @@
+method,k,ARI_mean,ARI_sd
+KMeans,2,0.821,0.182
+KMeans,5,0.715,0.18
+Ward,2,0.877,0.149
+Ward,5,0.788,0.192
+PAM_euclid,2,0.843,0.154
+PAM_euclid,5,0.559,0.179
+Hier_corr_avg,2,0.275,0.218
+Hier_corr_avg,5,0.385,0.154
+Spectral_kNN,2,0.871,0.161
+Spectral_kNN,5,0.578,0.156
+GMM_PCA4,2,0.805,0.259
+GMM_PCA4,5,0.786,0.194
