@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-from common import FIG, TABLE, load_pivot, setup_plot
+from common import load_pivot, setup_plot, figpath, tabpath
 
 setup_plot()
 pv = load_pivot()
@@ -16,7 +16,7 @@ summary = pd.DataFrame({f"{k}_ratio": p.explained_variance_ratio_ for k, p in fi
 summary.index = np.arange(1, len(summary) + 1)
 for k, p in fits.items():
     summary[f"{k}_cum"] = np.cumsum(p.explained_variance_ratio_)
-summary.round(4).to_csv(TABLE / "pca_explained_variance.csv", encoding="utf-8-sig")
+summary.round(4).to_csv(tabpath("pca_explained_variance.csv"), encoding="utf-8-sig")
 print(summary.head(7).map(lambda x: f"{x:.2%}"))
 
 fig, axes = plt.subplots(1, 2, figsize=(13, 5))
@@ -27,15 +27,15 @@ axes[0].set(title="Scree plot (eigenvalue)", xlabel="PC")
 axes[1].set(title="累積解釋變異", xlabel="PC")
 axes[1].axhline(.8, color="r", ls=":")
 for a in axes: a.legend(); a.grid(alpha=.3)
-fig.savefig(FIG / "pca_scree_cumulative.png", dpi=200, bbox_inches="tight")
+fig.savefig(figpath("pca_scree_cumulative.png"), dpi=200, bbox_inches="tight")
 
 # loadings (years) and scores (counties) for the correlation-matrix PCA
 p = fits["corr"]
 pcs = [f"PC{i}" for i in range(1, 5)]
 load = pd.DataFrame(p.components_[:4].T * np.sqrt(p.explained_variance_[:4]), index=pv.columns, columns=pcs)
 score = pd.DataFrame(p.transform(X["corr"])[:, :4], index=pv.index, columns=pcs)
-load.round(4).to_csv(TABLE / "pca_corr_loadings_years.csv", encoding="utf-8-sig")
-score.round(4).to_csv(TABLE / "pca_corr_scores_counties.csv", encoding="utf-8-sig")
+load.round(4).to_csv(tabpath("pca_corr_loadings_years.csv"), encoding="utf-8-sig")
+score.round(4).to_csv(tabpath("pca_corr_scores_counties.csv"), encoding="utf-8-sig")
 
 # biplot: counties = points, years = arrows
 fig, ax = plt.subplots(figsize=(12, 10))
@@ -50,4 +50,4 @@ for y, r in load.iterrows():
 ax.axhline(0, c="grey", lw=.5); ax.axvline(0, c="grey", lw=.5)
 ax.set(xlabel=f"PC1 ({p.explained_variance_ratio_[0]:.1%})", ylabel=f"PC2 ({p.explained_variance_ratio_[1]:.1%})",
        title="PCA biplot (correlation matrix)")
-fig.savefig(FIG / "pca_biplot_corr.png", dpi=200, bbox_inches="tight")
+fig.savefig(figpath("pca_biplot_corr.png"), dpi=200, bbox_inches="tight")

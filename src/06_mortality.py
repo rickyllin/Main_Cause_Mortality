@@ -6,7 +6,7 @@ import re
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from common import EXCLUDED, FIG, MOHW_DIR, TABLE, load_pivot, setup_plot
+from common import EXCLUDED, MOHW_DIR, load_pivot, setup_plot, figpath, tabpath
 
 setup_plot()
 # column positions on sheet "<county>2" (表2): total std=5, male std=12, female std=18
@@ -25,17 +25,17 @@ for f in sorted(MOHW_DIR.glob("roc*_county.xls")):
                      **{k: pd.to_numeric(r[c], errors="coerce") for k, c in COLS.items()}})
 mort = pd.DataFrame(rows)
 mort = mort[~mort["縣市別"].isin(EXCLUDED)]
-mort.to_csv(TABLE / "lung_mortality_county_year.csv", index=False, encoding="utf-8-sig")
+mort.to_csv(tabpath("lung_mortality_county_year.csv"), index=False, encoding="utf-8-sig")
 print(mort.groupby("year").size().to_dict())
 
 inc = load_pivot().stack().rename("asir").reset_index()
 inc.columns = ["縣市別", "year", "asir"]
 m = mort.merge(inc, on=["縣市別", "year"])
 m["MIR"] = m["asmr"] / m["asir"]  # age-standardised mortality / age-standardised incidence
-m.to_csv(TABLE / "lung_mir_county_year.csv", index=False, encoding="utf-8-sig")
+m.to_csv(tabpath("lung_mir_county_year.csv"), index=False, encoding="utf-8-sig")
 
 avg = m.groupby("縣市別")[["asir", "asmr", "MIR"]].mean().sort_values("MIR")
-avg.round(3).to_csv(TABLE / "lung_mir_county_mean_2020_2022.csv", encoding="utf-8-sig")
+avg.round(3).to_csv(tabpath("lung_mir_county_mean_2020_2022.csv"), encoding="utf-8-sig")
 print(avg.round(2))
 print("corr(ASIR,ASMR) by year:", m.groupby("year").apply(lambda g: g.asir.corr(g.asmr)).round(2).to_dict())
 
@@ -48,9 +48,9 @@ for mir in (0.4, 0.6, 0.8):
     ax.plot([0, lim], [0, lim * mir], "--", c="grey", lw=.7); ax.text(lim, lim * mir, f"MIR={mir}", fontsize=8)
 ax.set(xlabel="年齡標準化發生率 (2020–22 平均, /10萬)", ylabel="年齡標準化死亡率 (2020–22 平均, /10萬)",
        title="肺癌：發生率 vs 死亡率（各縣市）")
-fig.savefig(FIG / "incidence_vs_mortality_scatter.png", dpi=200, bbox_inches="tight")
+fig.savefig(figpath("incidence_vs_mortality_scatter.png"), dpi=200, bbox_inches="tight")
 
 fig, ax = plt.subplots(figsize=(10, 5.5))
 mort.pivot(index="縣市別", columns="year", values="asmr").loc[avg.index].plot.bar(ax=ax)
 ax.set(title="肺癌年齡標準化死亡率（衛福部死因統計）", ylabel="每10萬人口"); plt.setp(ax.get_xticklabels(), rotation=45)
-fig.savefig(FIG / "mortality_by_county_year.png", dpi=200, bbox_inches="tight")
+fig.savefig(figpath("mortality_by_county_year.png"), dpi=200, bbox_inches="tight")

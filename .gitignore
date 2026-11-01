@@ -10,3 +10,7 @@ paper/*.out
 paper/*.toc
 paper/*.xdv
 paper/*.synctex.gz
+
+# scratch output of the legacy notebooks
+notebooks/_scratch/
+.ipynb_checkpoints/

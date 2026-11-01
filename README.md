@@ -21,16 +21,23 @@
 
 ## 專案結構
 ```
-paper/            main.tex（分析文章，XeLaTeX + ctex）
-src/              可重現流程 01→09（common.py 為共用設定）
-outputs/          figures/ 圖、tables/ 表（由腳本產生）
-data/raw/         癌症登記發生率 CSV；mohw_cause_of_death/ 衛福部各縣市死因統計表（民國109–112、114年）
-data/external/    內政部縣市界線 shapefile (1140318)
-data/processed/   縣市 × 年份矩陣（由 01 產生）
-reports/          舊版報告 docx（已修正發生率/死亡率用語）、題目發想紀錄
-notebooks/legacy/ 原始 Colab notebooks（已清除輸出，僅供追溯）
-Makefile          make analysis / make paper
+paper/                 分析文章 main.tex（XeLaTeX + ctex）與編譯好的 main.pdf
+src/                   可重現的分析流程 01→09（見 src/README.md）
+notebooks/             Jupyter 筆記本（見 notebooks/README.md）
+  final_analysis/        原 191-cell Colab 大檔拆成的 9 個子任務筆記本（可執行）
+  archive/               歷史版本（供追溯）
+data/                  資料與說明（見 data/README.md）
+  raw/                   癌症登記發生率 CSV；衛福部各縣市死因統計表
+  external/              縣市界線 shapefile
+  processed/             縣市 × 年份矩陣
+outputs/               分析輸出，依主題分資料夾（見 outputs/README.md）
+  figures/{eda,pca,clustering,bayes,spatial,mortality}/
+  tables/{eda,pca,clustering,bayes,spatial,mortality}/
+reports/               舊版報告 docx（已修正發生率/死亡率用語）、題目發想紀錄
+Makefile               make analysis / make paper
 ```
+
+各資料夾內都有自己的 README 說明檔案用途。
 
 ## 執行
 ```bash

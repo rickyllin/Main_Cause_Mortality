@@ -24,7 +24,7 @@ from sklearn.metrics import adjusted_rand_score as ari, silhouette_score
 from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
 
-from common import FIG, RANDOM_STATE, TABLE, group_names, load_pivot, setup_plot
+from common import RANDOM_STATE, group_names, load_pivot, setup_plot, figpath, tabpath
 
 setup_plot()
 pv = load_pivot()
@@ -103,7 +103,7 @@ G = growth_features(pv)
 
 # model selection for the mixtures
 bic_pca, bic_growth = gmm_bic(scores4), gmm_bic(G)
-pd.DataFrame({"GMM_PCA4": bic_pca, "GMM_growth": bic_growth}).round(1).to_csv(TABLE / "gmm_bic.csv")
+pd.DataFrame({"GMM_PCA4": bic_pca, "GMM_growth": bic_growth}).round(1).to_csv(tabpath("gmm_bic.csv"))
 print("BIC (PCA scores):", {k: round(v, 1) for k, v in bic_pca.items()})
 print("BIC (growth coef):", {k: round(v, 1) for k, v in bic_growth.items()})
 
@@ -151,21 +151,21 @@ print(f"DBSCAN eps={eps:.2f}: noise =", [n for n, l in zip(names, db) if l < 0])
 for k in (3, 5):
     U = fuzzy_cmeans(Z, k)
     pd.DataFrame(U, index=names, columns=group_names(k)).round(3).to_csv(
-        TABLE / f"fuzzy_membership_k{k}.csv", encoding="utf-8-sig")
+        tabpath(f"fuzzy_membership_k{k}.csv"), encoding="utf-8-sig")
 pd.DataFrame(G, index=names, columns=["level", "slope", "curvature"]).round(3).to_csv(
-    TABLE / "growth_curve_features.csv", encoding="utf-8-sig")
+    tabpath("growth_curve_features.csv"), encoding="utf-8-sig")
 
-assign.to_csv(TABLE / "more_cluster_assignments.csv", encoding="utf-8-sig")
+assign.to_csv(tabpath("more_cluster_assignments.csv"), encoding="utf-8-sig")
 S = pd.Series(sil).unstack(0).round(3)
-S.to_csv(TABLE / "more_cluster_silhouette.csv")
+S.to_csv(tabpath("more_cluster_silhouette.csv"))
 print(S.T)
 
 # ---------- agreement with the main analysis (ARI vs Ward k=5) ----------
-ref = pd.read_csv(TABLE / "hclust_cluster_assignments.csv", index_col=0)
+ref = pd.read_csv(tabpath("hclust_cluster_assignments.csv"), index_col=0)
 base = {k: ref[f"Ward_k{k}"] for k in (2, 3, 4, 5)}
 ari_tab = pd.DataFrame({k: {m: ari(base[k], assign[f"{m}_k{k}"]) for m in METHODS if f"{m}_k{k}" in assign}
                         for k in (2, 3, 4, 5)}).round(3)
-ari_tab.to_csv(TABLE / "more_cluster_ari_vs_ward.csv")
+ari_tab.to_csv(tabpath("more_cluster_ari_vs_ward.csv"))
 print("ARI vs Ward:\n", ari_tab)
 
 # ---------- column-bootstrap stability (resample years with replacement) ----------
@@ -198,7 +198,7 @@ for m in ["KMeans", "Ward", "PAM_euclid", "Hier_corr_avg", "Spectral_kNN", "GMM_
     for k in (2, 5):
         mu, sd = stability(m, k)
         stab_rows.append({"method": m, "k": k, "ARI_mean": round(mu, 3), "ARI_sd": round(sd, 3)})
-stab = pd.DataFrame(stab_rows); stab.to_csv(TABLE / "more_cluster_bootstrap_stability.csv", index=False)
+stab = pd.DataFrame(stab_rows); stab.to_csv(tabpath("more_cluster_bootstrap_stability.csv"), index=False)
 print(stab.pivot(index="method", columns="k", values="ARI_mean"))
 
 # ---------- figures ----------
@@ -208,7 +208,7 @@ ax[0].set(title="與 Ward 分群之一致性 (ARI)", xlabel="k")
 st = stab.pivot(index="method", columns="k", values="ARI_mean")
 sns.heatmap(st, annot=True, fmt=".2f", cmap="YlOrRd_r", vmin=0, vmax=1, ax=ax[1])
 ax[1].set(title="年度重抽樣穩定性 (bootstrap ARI)", xlabel="k")
-fig.savefig(FIG / "more_cluster_agreement_stability.png", dpi=200, bbox_inches="tight")
+fig.savefig(figpath("more_cluster_agreement_stability.png"), dpi=200, bbox_inches="tight")
 
 # membership heatmap for k=5 across all methods (rows = counties ordered by Ward k=5)
 order = ref.sort_values("Ward_k5").index
@@ -219,10 +219,10 @@ sns.heatmap(code, cmap="Set1", cbar=False, linewidths=.5, ax=ax,
             xticklabels=[c.replace("_k5", "") for c in cols], yticklabels=order)
 ax.set_title("各演算法 k=5 分群歸屬（列：縣市；同色=同群，色彩編碼僅在欄內有意義）")
 plt.setp(ax.get_xticklabels(), rotation=40, ha="right")
-fig.savefig(FIG / "more_cluster_membership_k5.png", dpi=200, bbox_inches="tight")
+fig.savefig(figpath("more_cluster_membership_k5.png"), dpi=200, bbox_inches="tight")
 
 # fuzzy membership bar (k=3)
-U3 = pd.read_csv(TABLE / "fuzzy_membership_k3.csv", index_col=0).loc[order]
+U3 = pd.read_csv(tabpath("fuzzy_membership_k3.csv"), index_col=0).loc[order]
 U3.plot.barh(stacked=True, figsize=(9, 8), colormap="Set1", width=.85)
 plt.title("Fuzzy c-means (k=3)：各縣市對各群之隸屬度"); plt.gca().invert_yaxis()
-plt.savefig(FIG / "fuzzy_membership_k3.png", dpi=200, bbox_inches="tight")
+plt.savefig(figpath("fuzzy_membership_k3.png"), dpi=200, bbox_inches="tight")

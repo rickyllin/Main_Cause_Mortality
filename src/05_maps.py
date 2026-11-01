@@ -3,7 +3,7 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from common import EXCLUDED, FIG, GROUP_COLORS, SHP, TABLE, group_names, load_pivot, setup_plot
+from common import EXCLUDED, GROUP_COLORS, SHP, group_names, load_pivot, setup_plot, figpath, tabpath
 
 setup_plot()
 pv = load_pivot()
@@ -11,8 +11,8 @@ gdf = gpd.read_file(SHP)
 gdf["County"] = gdf["COUNTYNAME"].str.replace("臺", "台")
 gdf = gdf[~gdf["County"].isin(EXCLUDED)]
 
-assign = pd.concat([pd.read_csv(TABLE / "kmeans_cluster_assignments.csv", index_col=0),
-                    pd.read_csv(TABLE / "hclust_cluster_assignments.csv", index_col=0)], axis=1)
+assign = pd.concat([pd.read_csv(tabpath("kmeans_cluster_assignments.csv"), index_col=0),
+                    pd.read_csv(tabpath("hclust_cluster_assignments.csv"), index_col=0)], axis=1)
 TARGETS = ["KMeans_k2", "KMeans_k5", "Ward_k2", "Ward_k5", "Average_k4", "Complete_k4", "Single_k4"]
 
 for col in TARGETS:
@@ -30,5 +30,5 @@ for col in TARGETS:
                  label=f"{g}: {'、'.join(members)}")
     ax2.set(title="群組平均肺癌發生率", xlabel="診斷年", ylabel="每10萬人口")
     ax2.legend(fontsize=8, loc="upper left"); ax2.grid(alpha=.3)
-    fig.savefig(FIG / f"map_trend_{col}.png", dpi=200, bbox_inches="tight")
+    fig.savefig(figpath(f"map_trend_{col}.png"), dpi=200, bbox_inches="tight")
     plt.close(fig)

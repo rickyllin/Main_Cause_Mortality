@@ -22,6 +22,37 @@ _CJK_FONTS = ["PingFang TC", "Heiti TC", "Arial Unicode MS", "Noto Sans CJK TC",
               "Noto Sans TC", "Microsoft JhengHei", "Taipei Sans TC Beta"]
 
 
+# outputs are grouped by topic: outputs/figures/<topic>/ and outputs/tables/<topic>/
+_TOPIC_RULES = [
+    (r"^(eda_|county_correlation)", "eda"),
+    (r"^pca_", "pca"),
+    (r"^(bayes_)", "bayes"),
+    (r"^(spatial_|moran_|county_adjacency)", "spatial"),
+    (r"^(incidence_vs_mortality|mortality_by|lung_mortality|lung_mir)", "mortality"),
+    (r"^(kmeans_|hclust_|dendrogram_|map_trend_|more_cluster_|fuzzy_|gmm_|growth_curve)", "clustering"),
+]
+
+
+def _topic(name: str) -> str:
+    import re
+    for pat, topic in _TOPIC_RULES:
+        if re.match(pat, name):
+            return topic
+    raise ValueError(f"no output topic for {name!r}")
+
+
+def figpath(name: str) -> Path:
+    d = FIG / _topic(name)
+    d.mkdir(parents=True, exist_ok=True)
+    return d / name
+
+
+def tabpath(name: str) -> Path:
+    d = TABLE / _topic(name)
+    d.mkdir(parents=True, exist_ok=True)
+    return d / name
+
+
 def setup_plot():
     """Pick the first installed CJK font so Chinese labels render."""
     installed = {f.name for f in fm.fontManager.ttflist}

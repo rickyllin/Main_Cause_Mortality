@@ -15,7 +15,7 @@ import seaborn as sns
 from scipy.stats import invwishart
 from sklearn.cluster import KMeans
 
-from common import EXCLUDED, FIG, LUNG, RANDOM_STATE, RAW_CSV, TABLE, load_pivot, setup_plot
+from common import EXCLUDED, LUNG, RANDOM_STATE, RAW_CSV, load_pivot, setup_plot, figpath, tabpath
 
 setup_plot()
 rng = np.random.default_rng(RANDOM_STATE)
@@ -71,10 +71,10 @@ summ = pd.DataFrame({
     "P_top5": (rank5 <= 5).mean(0), "P_above_national_median": (lvl5 > np.median(lvl5, 1)[:, None]).mean(0),
     "growth_pct_per_yr_mid": 100 * np.median(growth, 0)}, index=names)
 summ["shrink_pct"] = 100 * (summ.post_median_2018_22 - summ.raw_2018_22) / summ.raw_2018_22
-summ.round(3).sort_values("post_median_2018_22").to_csv(TABLE / "bayes_county_summary.csv", encoding="utf-8-sig")
+summ.round(3).sort_values("post_median_2018_22").to_csv(tabpath("bayes_county_summary.csv"), encoding="utf-8-sig")
 print(summ.round(2).sort_values("post_median_2018_22"))
 pd.DataFrame({"mu_level": MU[:, 0], "mu_slope": MU[:, 1], "mu_curv": MU[:, 2], "phi": PHI}).describe().round(3).to_csv(
-    TABLE / "bayes_hyperparameters.csv")
+    tabpath("bayes_hyperparameters.csv"))
 
 # ---- figures -----------------------------------------------------------------------------------
 order = summ.sort_values("post_median_2018_22").index
@@ -85,7 +85,7 @@ ax.errorbar(s.post_median_2018_22, y, xerr=[s.post_median_2018_22 - s.lo95, s.hi
 ax.scatter(s.raw_2018_22, y, marker="x", c="tab:red", zorder=3, label="原始五年平均")
 ax.set_yticks(y); ax.set_yticklabels(order); ax.legend(); ax.grid(alpha=.3)
 ax.set(xlabel="肺癌年齡標準化發生率 (2018–22, /10萬)", title="階層模型之部分合併估計（小區域估計）")
-fig.savefig(FIG / "bayes_forest_2018_22.png", dpi=200, bbox_inches="tight")
+fig.savefig(figpath("bayes_forest_2018_22.png"), dpi=200, bbox_inches="tight")
 
 fig, axes = plt.subplots(2, 3, figsize=(15, 8), sharex=True)
 for ax, c in zip(axes.ravel(), ["澎湖縣", "金門縣", "台北市", "台南市", "新北市", "苗栗縣"]):
@@ -94,7 +94,7 @@ for ax, c in zip(axes.ravel(), ["澎湖縣", "金門縣", "台北市", "台南�
     ax.plot(years, q(curve[:, i], .5), c="tab:blue", label="後驗中位數"); ax.scatter(years, pv.iloc[i], s=14, c="tab:red", label="原始")
     ax.set_title(c)
 axes[0, 0].legend(); fig.suptitle("貝氏階層成長曲線 vs. 原始年度值（95%可信帶）")
-fig.savefig(FIG / "bayes_trajectories.png", dpi=200, bbox_inches="tight")
+fig.savefig(figpath("bayes_trajectories.png"), dpi=200, bbox_inches="tight")
 
 # ---- uncertainty-aware clustering: co-clustering probability of theta draws --------------------
 sc = TH.reshape(-1, P).std(0)
@@ -103,13 +103,13 @@ for d in sel:
     lab = KMeans(5, n_init=3, random_state=0).fit_predict(TH[d] / sc)
     co += lab[:, None] == lab[None]
 co /= len(sel)
-ref = pd.read_csv(TABLE / "hclust_cluster_assignments.csv", index_col=0).loc[names]
+ref = pd.read_csv(tabpath("hclust_cluster_assignments.csv"), index_col=0).loc[names]
 ordr = ref.sort_values("Ward_k5").index
 cop = pd.DataFrame(co, index=names, columns=names).loc[ordr, ordr]
-cop.round(3).to_csv(TABLE / "bayes_coclustering_prob_k5.csv", encoding="utf-8-sig")
+cop.round(3).to_csv(tabpath("bayes_coclustering_prob_k5.csv"), encoding="utf-8-sig")
 fig, ax = plt.subplots(figsize=(11, 9))
 sns.heatmap(cop, cmap="viridis", vmin=0, vmax=1, ax=ax, cbar_kws={"label": "同群機率"})
 ax.set_title("後驗同群機率（對 θ 的後驗抽樣做 K-means, k=5；列依 Ward k=5 排序）")
-fig.savefig(FIG / "bayes_coclustering_k5.png", dpi=200, bbox_inches="tight")
+fig.savefig(figpath("bayes_coclustering_k5.png"), dpi=200, bbox_inches="tight")
 print("min within-Ward-group co-cluster prob by group:",
       {g: round(cop.loc[idx.index, idx.index].values.min(), 2) for g, idx in ref.groupby("Ward_k5")})
