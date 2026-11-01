@@ -12,6 +12,8 @@
 | PC1 / PC2 詮釋 | PC1＝長期穩定的空間梯度（北部都會、宜蘭高；苗栗、屏東、南投、新竹縣、金門低）；PC2＝早發都會 vs. 後發中南部之時序翻轉 |
 | 分群 | K-means 與 Ward 在 k=2、5 成員一致；k=5：北部都會(台北/基隆/新北)、其餘本島 12 縣市、中西部南部偏鄉(南投/屏東/新竹縣/苗栗)、澎湖、金門 |
 | 其他演算法（07） | PAM、DTW、譜分群、GMM（PCA 得分／成長曲線）、fuzzy c-means、DBSCAN：K-means/Ward/GMM 在 k=5 完全一致（ARI=1）；k=2 最穩（bootstrap ARI 0.82–0.88）；相關係數距離（只看形狀）分不出群 |
+| 貝氏階層模型（08） | 部分合併小區域估計：澎湖 2018–22 原始 52.3 → 後驗 46.3（95%CrI 40.6–52.4，仍居全國最高，前5名機率 0.94）；金門 16.9 → 18.3；φ≈2.9（個案數 Poisson 變異低估波動） |
+| 空間約束分群（09） | 只合併相鄰縣市；Moran's I：1979–83 為 0.53（p=0.001），2018–22 為 −0.24（無空間群聚）；k=5 得北部都會/新竹–苗栗/東南部(南投、台東、屏東、花蓮)/西部/金門 |
 | 輪廓係數注意 | single/complete/average 的 k=2（0.461）只是把金門孤立，**不是**較佳的區域劃分 |
 | 發生 vs 死亡（2020–22） | 縣市間相關僅 0.33–0.53；MIR 台北 0.42 最低，屏東/台東 0.69 偏高；金門 0.95 疑為登記歸屬偏差 |
 
@@ -20,7 +22,7 @@
 ## 專案結構
 ```
 paper/            main.tex（分析文章，XeLaTeX + ctex）
-src/              可重現流程 01→07（common.py 為共用設定）
+src/              可重現流程 01→09（common.py 為共用設定）
 outputs/          figures/ 圖、tables/ 表（由腳本產生）
 data/raw/         癌症登記發生率 CSV；mohw_cause_of_death/ 衛福部各縣市死因統計表（民國109–112、114年）
 data/external/    內政部縣市界線 shapefile (1140318)
@@ -33,7 +35,7 @@ Makefile          make analysis / make paper
 ## 執行
 ```bash
 pip install -r requirements.txt
-make analysis        # 或依序執行 src/01…07
+make analysis        # 或依序執行 src/01…09
 make paper           # 需 XeLaTeX；亦可上傳 Overleaf（編譯器選 XeLaTeX，主檔 paper/main.tex）
 ```
 中文字型自動偵測（PingFang TC / Heiti TC / Noto Sans CJK 等）。
