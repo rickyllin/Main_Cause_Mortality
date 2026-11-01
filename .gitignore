@@ -10,3 +10,6 @@ paper/*.toc
 paper/*.xdv
 paper/*.synctex.gz
 
+
+# local-only originals (not part of the repository)
+local_only/

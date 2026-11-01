@@ -34,6 +34,7 @@ outputs/               分析輸出，依主題分資料夾（見 outputs/README
 docs/                  DATA_INVENTORY.md：本機原始資料夾的逐檔盤點
 reports/               舊版報告 docx（已修正發生率/死亡率用語）、題目發想紀錄
 Makefile               make analysis / make health_econ / make paper
+local_only/            （僅本機，不在 GitHub）原始檔案：Output_plots、新增資料集、舊版 docx 等
 ```
 
 各資料夾內都有自己的 README 說明檔案用途。
