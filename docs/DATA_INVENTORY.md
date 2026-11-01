@@ -6,8 +6,8 @@
 |---|---|---|
 | `肺癌罹病率資料.csv` | 癌症登記（各癌別 × 縣市 × 性別 × 年，1979–2022） | `data/raw/lung_cancer_incidence_1979_2022.csv`（已收錄） |
 | `直轄市、縣(市)界線1140318/` | 縣市界線 shapefile | `data/external/county_boundary/`（已收錄 .shp/.dbf/.prj/.cpg/.shx/.sbn/.sbx）；中繼資料 `*.xml`、`修正清單_11403.xlsx` 未收錄 |
-| `MVA 期末報告分析.ipynb`（12 MB） | Colab 主 notebook，191 cells | 拆成 `notebooks/final_analysis/01–09`＋`notebooks/archive/A–C`（輸出已清除，僅 ~250 KB） |
-| `期末報告資料.ipynb`、`MVA_code.ipynb` | 早期草稿、課程提交版 | `notebooks/archive/D、E` |
+| `MVA 期末報告分析.ipynb`（12 MB） | Colab 主 notebook，191 cells | 已由 `src/` 的 py 腳本取代；專案內不再保留 notebook（曾以拆分版收錄於 git 歷史） |
+| `期末報告資料.ipynb`、`MVA_code.ipynb` | 早期草稿、課程提交版 | 同上，專案內不保留 |
 | `台灣地區肺癌死亡率之長期追蹤分析.docx`、`多變量期末報告.docx` | 舊版報告／題目發想（含 AI 對話貼文） | `reports/`（舊版已修正「發生率／死亡率」用語）；新版為 `paper/main.tex` |
 | `Output_plots/` | Colab 產生的圖與表 | **未收錄**：已由 `src/` 腳本重新產生為 `outputs/`（結果一致）；原圖仍留在本機 |
 | `多變量作業＿HW1` | 課程作業 notebook | 未收錄（與本專案無關） |
@@ -22,5 +22,5 @@
 
 ## 建議
 若要讓本機的原始資料夾也一目了然，建議的結構是：
-`1_原始資料/`（CSV、shapefile、衛福部壓縮檔）、`2_舊版報告與筆記/`（docx、舊 notebook）、`3_舊版輸出/`（Output_plots）。
+`1_原始資料/`（CSV、shapefile、衛福部壓縮檔）、`2_舊版報告與筆記/`（docx、舊 notebook；專案中的 notebook 已移除）、`3_舊版輸出/`（Output_plots）。
 由於其中部分檔案受其他 git repo 追蹤，搬移前建議先確認。

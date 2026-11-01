@@ -1,7 +1,6 @@
 .DS_Store
 __pycache__/
 .venv/
-.ipynb_checkpoints/
 data/processed/*_with_lienchiang.csv
 # LaTeX build files
 paper/*.aux
@@ -11,6 +10,3 @@ paper/*.toc
 paper/*.xdv
 paper/*.synctex.gz
 
-# scratch output of the legacy notebooks
-notebooks/_scratch/
-.ipynb_checkpoints/

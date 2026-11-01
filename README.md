@@ -24,9 +24,6 @@
 paper/                 main.tex（主報告：PCA／分群／空間）＋ health_economics.tex（健康經濟學案例）；各含編譯好的 PDF
 src/                   主流程 01→09（見 src/README.md）
   health_economics/      健康經濟學案例的程式 10→16（見該資料夾 README）
-notebooks/             Jupyter 筆記本（見 notebooks/README.md）
-  final_analysis/        原 191-cell Colab 大檔拆成的 9 個子任務筆記本（可執行）
-  archive/               歷史版本（供追溯）
 data/                  資料與說明（見 data/README.md）
   raw/                   癌症登記發生率 CSV；衛福部各縣市死因統計表
   external/              縣市界線 shapefile
@@ -59,4 +56,4 @@ make paper           # 需 XeLaTeX；亦可上傳 Overleaf（編譯器選 XeLaTe
 - `paper/main.tex` **尚未在本機編譯驗證**（環境無 TeX）；內含紅色【待確認】標註（法規日期、LDCT 計畫條件、文獻書目等）需人工核對後移除。
 - 1979–2022 完整**死亡率**序列需另取衛福部歷年死因統計；取得後 `src/01–05` 可直接套用。
 - 小人口離島（金門、澎湖）估計不穩；MIR 為粗略代理指標；全為生態學層級分析。
-- 原始作業 HW1 notebook 與 `新增資料集` 內的 PDF 報告未納入；`notebooks/legacy/` 仍保留舊「死亡率」措辭。
+- 原始作業 HW1 與 `新增資料集` 內的 PDF 報告未納入。原 Colab notebook 已移除，流程完全以 `src/` 的 py 腳本為準（舊 notebook 仍可從 git 歷史 `14819f3` 之前的提交取回）。
