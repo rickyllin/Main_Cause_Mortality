@@ -1,0 +1,6 @@
+﻿design,spec,beta,pct,ri_p,n_perm
+癌別DID：肺癌 vs 非篩檢癌別,Treat x post(2021-22),0.1093,11.5463,0.6,10
+癌別DID：肺癌 vs 非篩檢癌別,Treat x 2020,0.0688,7.1273,0.9,10
+癌別DID：肺癌 vs 非篩檢癌別,w/ treated linear trend: Treat x 2021,-0.0146,-1.4479,0.9,10
+癌別DID：肺癌 vs 非篩檢癌別,w/ treated linear trend: Treat x 2022,0.0044,0.4382,1.0,10
+癌別DID：肺癌 vs 非篩檢癌別,w/ treated linear trend: trend (per yr),0.0153,1.5367,0.5,10

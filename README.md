@@ -17,24 +17,26 @@
 | 輪廓係數注意 | single/complete/average 的 k=2（0.461）只是把金門孤立，**不是**較佳的區域劃分 |
 | 發生 vs 死亡（2020–22） | 縣市間相關僅 0.33–0.53；MIR 台北 0.42 最低，屏東/台東 0.69 偏高；金門 0.95 疑為登記歸屬偏差 |
 
-完整論述見 **`paper/main.tex`**（LaTeX，含公共衛生討論與政策建議）。
+完整論述見 **`paper/main.tex`**（LaTeX，含公共衛生討論與政策建議）；健康經濟學的案例探討（固定效果、DID／合成控制／DML、空間自回歸與不平等）見 **`paper/health_economics.tex`**。
 
 ## 專案結構
 ```
-paper/                 分析文章 main.tex（XeLaTeX + ctex）與編譯好的 main.pdf
-src/                   可重現的分析流程 01→09（見 src/README.md）
+paper/                 main.tex（主報告：PCA／分群／空間）＋ health_economics.tex（健康經濟學案例）；各含編譯好的 PDF
+src/                   主流程 01→09（見 src/README.md）
+  health_economics/      健康經濟學案例的程式 10→16（見該資料夾 README）
 notebooks/             Jupyter 筆記本（見 notebooks/README.md）
   final_analysis/        原 191-cell Colab 大檔拆成的 9 個子任務筆記本（可執行）
   archive/               歷史版本（供追溯）
 data/                  資料與說明（見 data/README.md）
   raw/                   癌症登記發生率 CSV；衛福部各縣市死因統計表
   external/              縣市界線 shapefile
-  processed/             縣市 × 年份矩陣
+  processed/             縣市 × 年份矩陣、面板資料
 outputs/               分析輸出，依主題分資料夾（見 outputs/README.md）
-  figures/{eda,pca,clustering,bayes,spatial,mortality}/
-  tables/{eda,pca,clustering,bayes,spatial,mortality}/
+  figures/ tables/       主流程：{eda,pca,clustering,bayes,spatial,mortality}
+  health_economics/      健康經濟學案例：{fe,did,causal,inequality}
+docs/                  DATA_INVENTORY.md：本機原始資料夾的逐檔盤點
 reports/               舊版報告 docx（已修正發生率/死亡率用語）、題目發想紀錄
-Makefile               make analysis / make paper
+Makefile               make analysis / make health_econ / make paper
 ```
 
 各資料夾內都有自己的 README 說明檔案用途。

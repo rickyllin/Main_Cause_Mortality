@@ -1,0 +1,5 @@
+﻿component,share_of_variance
+county FE only,0.1132
+year FE only,0.7058
+county + year FE,0.819
+unexplained,0.181

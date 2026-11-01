@@ -1,0 +1,6 @@
+﻿design,spec,beta,pct,ri_p,n_perm
+縣市DID：雙北（台北＋新北）vs 其餘19縣市,Treat x post(2021-22),-0.0149,-1.4822,0.7952,210
+縣市DID：雙北（台北＋新北）vs 其餘19縣市,Treat x 2020,-0.053,-5.1621,0.4238,210
+縣市DID：雙北（台北＋新北）vs 其餘19縣市,w/ treated linear trend: Treat x 2021,-0.0403,-3.9539,0.6095,210
+縣市DID：雙北（台北＋新北）vs 其餘19縣市,w/ treated linear trend: Treat x 2022,0.0388,3.9519,0.6143,210
+縣市DID：雙北（台北＋新北）vs 其餘19縣市,w/ treated linear trend: trend (per yr),-0.0019,-0.1884,0.8905,210

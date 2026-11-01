@@ -1,0 +1,6 @@
+﻿design,spec,beta,pct,ri_p,n_perm
+癌別DID：篩檢導向癌別（大腸、口腔、乳、子宮頸）vs 非篩檢癌別,Treat x post(2021-22),-0.0426,-4.1701,0.6811,715
+癌別DID：篩檢導向癌別（大腸、口腔、乳、子宮頸）vs 非篩檢癌別,Treat x 2020,-0.0385,-3.7798,0.642,715
+癌別DID：篩檢導向癌別（大腸、口腔、乳、子宮頸）vs 非篩檢癌別,w/ treated linear trend: Treat x 2021,-0.0414,-4.0535,0.2434,715
+癌別DID：篩檢導向癌別（大腸、口腔、乳、子宮頸）vs 非篩檢癌別,w/ treated linear trend: Treat x 2022,0.0154,1.5497,0.7622,715
+癌別DID：篩檢導向癌別（大腸、口腔、乳、子宮頸）vs 非篩檢癌別,w/ treated linear trend: trend (per yr),-0.0039,-0.3938,0.7776,715

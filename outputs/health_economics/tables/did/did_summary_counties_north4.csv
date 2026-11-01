@@ -1,0 +1,6 @@
+﻿design,spec,beta,pct,ri_p,n_perm
+縣市DID：北北基桃 vs 其餘17縣市,Treat x post(2021-22),-0.0575,-5.5853,0.2662,5985
+縣市DID：北北基桃 vs 其餘17縣市,Treat x 2020,-0.0653,-6.3256,0.4324,5985
+縣市DID：北北基桃 vs 其餘17縣市,w/ treated linear trend: Treat x 2021,-0.0214,-2.1164,0.7419,1995
+縣市DID：北北基桃 vs 其餘17縣市,w/ treated linear trend: Treat x 2022,0.0366,3.7266,0.5579,1995
+縣市DID：北北基桃 vs 其餘17縣市,w/ treated linear trend: trend (per yr),-0.0087,-0.8639,0.4471,1995

@@ -1,8 +1,11 @@
-pandas
-numpy
-scipy
-scikit-learn
-matplotlib
-seaborn
 geopandas
+joblib
+matplotlib
+numpy
 openpyxl
+pandas
+scikit-learn
+scipy
+seaborn
+statsmodels
+xlrd

@@ -1,0 +1,12 @@
+﻿model,term,coef,se,p,ci_lo,ci_hi,n_obs,r2
+M1 pooled OLS,t,0.03404,0.00179,0.0,0.03031,0.03776,924,0.61194
+M2 county FE + trend,t,0.03404,0.00181,0.0,0.03027,0.0378,924,0.72511
+"M2w county FE + trend (WLS, weight=cases)",t,0.0229,0.00187,0.0,0.01901,0.0268,924,0.78066
+M3 county FE + quadratic,t,0.07678,0.00559,0.0,0.06511,0.08844,924,0.79234
+M3 county FE + quadratic,t2,-0.0994,0.01014,0.0,-0.12054,-0.07825,924,0.79234
+M4 test: equal county slopes (F),F,6.16607,,0.0,,,924,
+M6a TWFE + ln pop,ln_pop,-0.45586,0.11429,0.00072,-0.69427,-0.21745,905,0.84578
+M6b TWFE + ln pop + ln oral-cancer ASIR,ln_pop,-0.36659,0.10233,0.00186,-0.58005,-0.15313,905,0.85916
+M6b TWFE + ln pop + ln oral-cancer ASIR,ln_oral,0.21549,0.07263,0.00762,0.06398,0.36699,905,0.85916
+M6c TWFE + covariates (WLS),ln_pop,-0.27606,0.14969,0.08002,-0.58831,0.03619,905,0.88831
+M6c TWFE + covariates (WLS),ln_oral,0.33019,0.09408,0.0022,0.13395,0.52644,905,0.88831
